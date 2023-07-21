@@ -52,9 +52,9 @@ const boxClick = (event) => {
     if (!gameOver) {
       turn = changeTurn();
       if (turn === "X") {
-        message.innerHTML = `${player1} you're up`;
+        message.innerHTML = `${player1} TURN`;
       } else {
-        message.innerHTML = `${player2} you're up`;
+        message.innerHTML = `${player2} TURN`;
       }
     } else {
       if (turn === "X") {
@@ -66,6 +66,7 @@ const boxClick = (event) => {
   } else {
     event.target.removeEventListener("click", boxClick);
   }
+  event.stopPropagation();
 };
 
 //Start Game function
@@ -75,13 +76,14 @@ const startGame = () => {
   const game = document.getElementsByClassName("main-container")[0];
   const message = document.getElementsByClassName("message")[0];
 
-  message.innerHTML = `${player1} you're up`;
+  message.innerHTML = `${player1} TURN`;
   user.style.display = "none";
   game.style.display = "flex";
 
   //Add an eventListener for each cell
   let boxes = document.getElementsByClassName("cell");
   Array.from(boxes).forEach((val) => {
+    console.log(val);
     val.addEventListener("click", boxClick);
   });
 };
@@ -91,15 +93,18 @@ submit.addEventListener("click", startGame);
 //Reset the game from start
 const resetGame = () => {
   let player1 = document.getElementById("player1").value;
+  
   const boxes = document.getElementsByClassName("cell");
   const message = document.getElementsByClassName("message")[0];
   Array.from(boxes).forEach((val) => {
     val.innerHTML = "";
     val.style.backgroundColor = "rgba(241, 142, 190, 0.877)";
   });
-
+ 
+  turn = "X";
   gameOver = false;
-  message.innerHTML = `${player1} you're up`;
+  message.innerHTML = `${player1} TURN`
+  
 };
 
 reset.addEventListener("click", resetGame);
