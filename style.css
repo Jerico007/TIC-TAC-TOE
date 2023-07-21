@@ -73,13 +73,11 @@
   grid-template-rows: auto auto auto;
 }
 
-.cell {
-  font-size: 40px;
-}
 
 .game-container div {
   display: flex;
-  font-size: 30px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 50px;
   justify-content: center;
   align-items: center;
   color: white;
