@@ -4,10 +4,9 @@ const submit = document.getElementById("submit");
 const reset = document.getElementById("reset");
 const reload = document.getElementById("reload");
 
-
 //Code to check who has won the game
 const checkWin = () => {
-    //Mapping the patterns into the 2D array
+  //Mapping the patterns into the 2D array
   let myMap = [
     [0, 1, 2],
     [3, 4, 5],
@@ -21,16 +20,20 @@ const checkWin = () => {
 
   myMap.forEach((val) => {
     const boxes = document.getElementsByClassName("cell");
-
+    //Once gameOver no need to check for other possibilities
+    if (gameOver) {
+      return;
+    }
     if (
       boxes[val[0]].innerHTML === boxes[val[1]].innerHTML &&
       boxes[val[0]].innerHTML === boxes[val[2]].innerHTML &&
       boxes[val[0]].innerHTML !== ""
     ) {
-      boxes[val[0]].style.backgroundColor = "purple";
-      boxes[val[1]].style.backgroundColor = "purple";
-      boxes[val[2]].style.backgroundColor = "purple";
+      boxes[val[0]].classList.add("winner");
+      boxes[val[1]].classList.add("winner");
+      boxes[val[2]].classList.add("winner");
       gameOver = true;
+      return;
     }
   });
 };
@@ -52,15 +55,31 @@ const boxClick = (event) => {
     if (!gameOver) {
       turn = changeTurn();
       if (turn === "X") {
-        message.innerHTML = `${player1} TURN`;
+        if (player1 === "") {
+          message.innerHTML = `Player 1's TURN`;
+        } else {
+          message.innerHTML = `${player1}'s TURN`;
+        }
       } else {
-        message.innerHTML = `${player2} TURN`;
+        if (player2 === "") {
+          message.innerHTML = `Player 2's TURN`;
+        } else {
+          message.innerHTML = `${player2}'s TURN`;
+        }
       }
     } else {
       if (turn === "X") {
-        message.innerHTML = `${player1} congratulations you won!`;
+        if (player1 === "") {
+          message.innerHTML = `Player 1 congratulations you won!`;
+        } else {
+          message.innerHTML = `${player1} congratulations you won!`;
+        }
       } else {
-        message.innerHTML = `${player2} congratulations you won!`;
+        if (player2 === "") {
+          message.innerHTML = `Player 2 congratulations you won!`;
+        } else {
+          message.innerHTML = `${player2} congratulations you won!`;
+        }
       }
     }
   } else {
@@ -76,39 +95,39 @@ const startGame = () => {
   const game = document.getElementsByClassName("main-container")[0];
   const message = document.getElementsByClassName("message")[0];
 
-  message.innerHTML = `${player1} TURN`;
+  if (player1 === "") {
+    message.innerHTML = `Player 1's TURN`;
+  } else {
+    message.innerHTML = `${player1}'s TURN`;
+  }
   user.style.display = "none";
   game.style.display = "flex";
 
   //Add an eventListener for each cell
   let boxes = document.getElementsByClassName("cell");
   Array.from(boxes).forEach((val) => {
-    console.log(val);
     val.addEventListener("click", boxClick);
   });
 };
 
+//Call startGame function when clicked on submit button
 submit.addEventListener("click", startGame);
 
 //Reset the game from start
 const resetGame = () => {
-  let player1 = document.getElementById("player1").value;
-  
   const boxes = document.getElementsByClassName("cell");
-  const message = document.getElementsByClassName("message")[0];
   Array.from(boxes).forEach((val) => {
     val.innerHTML = "";
-    val.style.backgroundColor = "rgba(241, 142, 190, 0.877)";
+    val.classList.remove("winner");
   });
- 
+
   turn = "X";
   gameOver = false;
-  message.innerHTML = `${player1} TURN`
-  
+  // After reseting inner cell content call startGame() function
+  startGame();
 };
 
 reset.addEventListener("click", resetGame);
-
 
 //Reload the game from the form page
 const reloadGame = () => {
