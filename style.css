@@ -120,6 +120,10 @@
   color: wheat;
 }
 
+.winner {
+  background-color: #944ac9 !important;
+}
+
 @media screen and (max-width: 512px) {
   .users input {
     text-align: center;
